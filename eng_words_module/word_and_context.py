@@ -24,7 +24,7 @@ try:
 
         html_content = response.text.encode("utf-8")
         soup = BeautifulSoup(html_content, 'html.parser')
-        result_eng = soup.find(class_="src ltr").find('span').text
+        result_eng = soup.find(class_="src ltr").find('span').text.replace(word, word.upper())
         return word.upper() + result_eng
 except:
     print("Failed to fetch the webpage: ", response.status_code)
