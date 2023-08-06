@@ -8,7 +8,7 @@ html = parse_html(url=url)
 def get_current_listing():
     soup = BeautifulSoup(html, 'html.parser')
     result = soup.find(
-        class_="ant-typography ant-typography-ellipsis ant-typography-ellipsis-multiple-line article-item-title").find('span').text
+        class_="ant-typography ant-typography-ellipsis article-item-title").find('span').text
     return result
 
 
