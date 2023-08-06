@@ -1,7 +1,7 @@
 import requests
 from user_agents import random_user_agent
 
-def parse_html(url: type.__str__):
+def parse_html(url: str):
     response = requests.get(url, headers={'User-Agent': random_user_agent()})
 
     if response.status_code == 200:
