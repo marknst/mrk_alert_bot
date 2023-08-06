@@ -15,6 +15,14 @@ def random_user_agent():
     return random.choice(user_agent_list)
 
 
+def clean_result_ukr(string: str):
+    start_index = string.find('t="')
+    end_index = string.rfind('" data-url=')
+    new_string = string[start_index:end_index]
+    result_string = new_string.replace('t="', '').replace('&lt;em&gt;', '').replace('&lt;/em&gt;', '')
+    return result_string
+
+
 try:
     def get_word_and_context():
         word = random_word()
@@ -24,8 +32,10 @@ try:
 
         html_content = response.text.encode("utf-8")
         soup = BeautifulSoup(html_content, 'html.parser')
-        result_eng = soup.find(class_="src ltr").find('span').text.replace(word, word.upper())
-        return word.upper() + result_eng
+        result_eng = soup.find(class_="src ltr").find('span').text.replace(word, word.upper()).strip()
+        result_ukr = clean_result_ukr(str(soup.find(class_="add icon addentry")))
+        
+        return f"{word.upper()}\n🇬🇧: {result_eng}\n🇺🇦: {result_ukr}'"
 except:
     print("Failed to fetch the webpage: ", response.status_code)
     html_content = None
