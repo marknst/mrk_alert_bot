@@ -3,7 +3,6 @@ import asyncio
 import config
 import time
 import random
-from eng_words_module import word_and_context
 from autocheck_module import check_voting, check_new_listings
 
 bot = Bot(token=config.token)
@@ -14,14 +13,8 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    await message.reply('Available commands: /random_word /start_autocheck /stop_autocheck')
+    await message.reply('Available commands: /start_autocheck /stop_autocheck')
 
-# /random word
-
-@dp.message_handler(commands=['random_word'])
-async def send_random_word_and_context(message: types.Message):
-    chat_id = message.from_user.id
-    await bot.send_message(chat_id=chat_id, text=word_and_context.get_word_and_context())
 
 # /start_autocheck
 
@@ -33,7 +26,6 @@ old_listing = ""
 async def bitmart_vote_autocheck(chat_id: int):
     global old_voting
     current_voting = check_voting.get_current_voting()
-    print('still checking bitmart..')
     if current_voting != old_voting:
         old_voting = current_voting
         await bot.send_message(chat_id, f"NEW VOTING: {current_voting}")
@@ -42,7 +34,6 @@ async def bitmart_vote_autocheck(chat_id: int):
 async def bybit_listings_autocheck(chat_id: int):
     global old_listing
     current_listing = check_new_listings.get_current_listing()
-    print('still checking bybit..')
     if current_listing != old_listing:
         old_listing = current_listing
         await bot.send_message(chat_id, f"NEW LISTING: {current_listing}")
